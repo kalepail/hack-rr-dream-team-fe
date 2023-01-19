@@ -1,0 +1,12 @@
+.identicon {
+  border-radius: 16px;
+  border: 2px solid rgb(116, 206, 116);
+  height: 32px;
+  width: 32px;
+}
+
+.user {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}

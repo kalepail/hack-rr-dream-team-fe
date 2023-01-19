@@ -1,0 +1,27 @@
+.balance {
+  justify-content: center;
+  display: flex;
+  margin-top: 32px;
+}
+
+.balanceRow {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.paper {
+  padding: 16px;
+}
+
+.title {
+  text-align: center;
+}
+
+.accountRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}

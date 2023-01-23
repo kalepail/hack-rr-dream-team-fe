@@ -7,25 +7,34 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { userPublicKey } from "@/constants/user";
 import { truncateString } from "@/helpers/stellar";
 
 import layoutStyles from "@/styles/Layout.module.css";
 import userStyles from "@/styles/User.module.css";
 
 const Withdraw = () => {
-  const [accounts, setAccounts] = useState([""]);
+  let demoPublicKey = "";
+  const [accounts, setAccounts] = useState([demoPublicKey]);
+  const [identiconUrl, setIdenticonUrl] = useState("");
 
   useEffect(() => {
-    const accounts = [
-      userPublicKey,
-      "GALIHSEAEFNABLMMK5E3Q7ACB3XAQXHWBYD5B7DVUV265FSD4ME7BKFX",
-      "GAFVTEM4I67J3ETKMGB5UVQ5IPWSAI2K2B3IFRTIWIXG27LREHNYDMUP",
-      "GDUPNHEGAM4L22RHI5BOILIIXUVUKKMMVGSRRSQYXWVHP6HLL6HPSNNQ",
-    ];
-    setAccounts(accounts);
+    demoPublicKey = localStorage.getItem("publicKey") || "";
+
+    setAccounts([demoPublicKey]);
   }, []);
 
+  useEffect(() => {
+    demoPublicKey = localStorage.getItem("publicKey") || "";
+
+    const canvas = createStellarIdenticon(demoPublicKey);
+    setIdenticonUrl(canvas.toDataURL());
+  }, []);
+
+  const handleWithdraw = async () => {
+    const secretKey = localStorage.getItem("secretKey");
+    const initReq = await fetch(`/api/withdraw?sender=${secretKey}`);
+    const r = await initReq.json();
+  };
   return (
     <section>
       <Container component="main" maxWidth="md">
@@ -40,18 +49,21 @@ const Withdraw = () => {
                     <div className={userStyles.user}>
                       <img
                         className={userStyles.identicon}
-                        src={createStellarIdenticon(acct).toDataURL()}
+                        src={identiconUrl}
                       />
+                      {truncateString(accounts[0])}
                       <Typography
                         sx={{ fontSize: 14 }}
                         color="text.secondary"
                         gutterBottom
-                      >
-                        {truncateString(acct)}
-                      </Typography>
+                      ></Typography>
                     </div>
                     <CardActions>
-                      <Button variant="contained" size="small">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={handleWithdraw}
+                      >
                         Withdraw
                       </Button>
                     </CardActions>

@@ -13,6 +13,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import * as SorobanClient from "soroban-client";
+import { useSorobanReact } from "@soroban-react/core";
+import { useSendTransaction } from "@soroban-react/contracts";
+
+import { userPublicKey } from "@/constants/user";
+
 const theme = createTheme();
 
 const Copyright = (props: any) => (
@@ -27,14 +33,20 @@ const Copyright = (props: any) => (
 );
 
 const Login = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const sorobanContext = useSorobanReact();
+  const { sendTransaction } = useSendTransaction(undefined, { sorobanContext });
+  const { activeChain, server, address } = sorobanContext;
+
+  console.log(sorobanContext);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
-    Router.push("");
+
+    Router.push("/User/Profile");
   };
 
   return (
@@ -53,7 +65,7 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up For An Account
           </Typography>
           <Box
             component="form"

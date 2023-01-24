@@ -1,7 +1,10 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
-import { SorobanReactProvider } from "@soroban-react/core";
+import {
+  SorobanReactProvider,
+  getDefaultConnectors,
+} from "@soroban-react/core";
 // eslint-disable-next-line
 import { chains } from "@soroban-react/chains";
 import { ChainMetadata, ConnectorList } from "@soroban-react/types";
@@ -12,6 +15,10 @@ const allowedChains: ChainMetadata[] = [
   chains.standalone,
   chains.futurenet,
 ];
+const { connectors } = getDefaultConnectors({
+  appName: "Exanple Stellar App",
+  chains: allowedChains,
+});
 
 const allowedConnectors: ConnectorList = [];
 
@@ -20,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <SorobanReactProvider
       appName={appName}
       chains={allowedChains}
-      connectors={allowedConnectors}
+      connectors={connectors}
     >
       <Component {...pageProps} />
     </SorobanReactProvider>

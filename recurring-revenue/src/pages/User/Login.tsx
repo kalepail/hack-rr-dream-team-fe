@@ -37,7 +37,6 @@ const Login = () => {
   const { sendTransaction } = useSendTransaction(undefined, { sorobanContext });
   const { activeChain, server, address } = sorobanContext;
 
-  console.log(sorobanContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -65,7 +64,7 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign Up For An Account
+            Sign Up For An XLMFlix Account
           </Typography>
           <Box
             component="form"

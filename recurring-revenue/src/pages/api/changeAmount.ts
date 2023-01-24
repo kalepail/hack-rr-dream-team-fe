@@ -14,17 +14,19 @@ export default function handler(
 
   let output;
 
+  const changeAmtCmd = `soroban invoke \
+  --id 6efd4d3ad1e1951482565e664981d0d85b73f0c40cd113fa3a093f6eb637b135 \
+  --secret-key ${req.query.sender} \
+  --rpc-url http://localhost:8000/soroban/rpc \
+  --network-passphrase 'Test SDF Future Network ; October 2022' \
+  --fn fix_amount \
+  --arg ${req.query.amount}`;
+
+  console.log("CHANGE THE AMOUNT OF THE PAYMENT");
+  console.log(changeAmtCmd);
+
   try {
-    output = execSync(
-      `soroban invoke \
-      --id 6efd4d3ad1e1951482565e664981d0d85b73f0c40cd113fa3a093f6eb637b135 \
-      --secret-key ${req.query.sender} \
-      --rpc-url http://localhost:8000/soroban/rpc \
-      --network-passphrase 'Test SDF Future Network ; October 2022' \
-      --fn fix_amount \
-      --arg ${req.query.amount}`,
-      { encoding: "utf-8" }
-    ); // the default is 'buffer'
+    output = execSync(changeAmtCmd, { encoding: "utf-8" }); // the default is 'buffer'
   } catch (e) {
     console.log("error!");
     console.error(e);

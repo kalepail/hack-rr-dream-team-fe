@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { contractId, tokenId } from "@/constants/contract";
 
 type Data = {
   name: string;
@@ -14,16 +15,18 @@ export default function handler(
 
   let output;
 
+  const withdrawCmd = `soroban invoke \
+  --id ${contractId} \
+  --secret-key ${req.query.sender} \
+  --rpc-url http://localhost:8000/soroban/rpc \
+  --network-passphrase 'Test SDF Future Network ; October 2022' \
+  --fn withdraw`;
+
+  console.log("WITHDRAW PAYMENT");
+  console.log(withdrawCmd);
+
   try {
-    output = execSync(
-      `soroban invoke \
-      --id 6efd4d3ad1e1951482565e664981d0d85b73f0c40cd113fa3a093f6eb637b135 \
-      --secret-key ${req.query.sender} \
-      --rpc-url http://localhost:8000/soroban/rpc \
-      --network-passphrase 'Test SDF Future Network ; October 2022' \
-      --fn withdraw`,
-      { encoding: "utf-8" }
-    ); // the default is 'buffer'
+    output = execSync(withdrawCmd, { encoding: "utf-8" }); // the default is 'buffer'
   } catch (e) {
     console.log("error!");
     console.error(e);

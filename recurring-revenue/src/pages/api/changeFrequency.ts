@@ -14,17 +14,19 @@ export default function handler(
 
   let output;
 
+  const changeFreqCmd = `soroban invoke \
+  --id 6efd4d3ad1e1951482565e664981d0d85b73f0c40cd113fa3a093f6eb637b135 \
+  --secret-key ${req.query.sender} \
+  --rpc-url http://localhost:8000/soroban/rpc \
+  --network-passphrase 'Test SDF Future Network ; October 2022' \
+  --fn fix_step \
+  --arg ${Number(req.query.step)}`;
+
+  console.log("CHANGE FREQUENCY OF PAYMENT");
+  console.log(changeFreqCmd);
+
   try {
-    output = execSync(
-      `soroban invoke \
-      --id 6efd4d3ad1e1951482565e664981d0d85b73f0c40cd113fa3a093f6eb637b135 \
-      --secret-key ${req.query.sender} \
-      --rpc-url http://localhost:8000/soroban/rpc \
-      --network-passphrase 'Test SDF Future Network ; October 2022' \
-      --fn fix_step \
-      --arg ${Number(req.query.step) * 60 * 60 * 24}`,
-      { encoding: "utf-8" }
-    ); // the default is 'buffer'
+    output = execSync(changeFreqCmd, { encoding: "utf-8" }); // the default is 'buffer'
   } catch (e) {
     console.log("error!");
     console.error(e);
